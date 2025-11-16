@@ -44,3 +44,9 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   --mat-mdc-button-persistent-ripple-color: #ffffff;
   --mdc-ripple-color: #ffffff;
 }
+
+.whiteSpinner{
+  @include mat.progress-spinner-overrides((
+    active-indicator-color: #ffffff, //white
+  ));
+}
