@@ -50,3 +50,8 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
     active-indicator-color: #ffffff, //white
   ));
 }
+
+.mat-mdc-raised-button {
+  // --mat-button-protected-container-height: 60px;
+  --mat-button-protected-container-shape: 2px;
+}
