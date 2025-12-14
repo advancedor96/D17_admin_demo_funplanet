@@ -42,5 +42,23 @@
     line-height: 70px;
 }
 
+input[matInput] {
+  font-family: 'password', sans-serif; /* 使用自定義字體模擬星號 */
+  -webkit-text-security: disc; /* 非標準屬性，部分瀏覽器支持 */
+  text-security: disc; /* 非標準屬性，部分瀏覽器支持 */
+}
 
+::ng-deep .myyyyy_huge_error {
+  font-size: 32px !important;
+  padding: 48px 32px !important;
+  border-radius: 20px !important;
+  max-width: 90vw !important;           /* 幾乎滿版寬度 */
+  min-height: 160px !important;
+  transform: scale(1);
+  box-shadow: 0 20px 40px rgba(0,0,0,0.3) !important;
+  text-align: center;
+}
 
+::ng-deep .myyyyy_huge_error .notyf__message {
+  font-weight: 600;
+}

@@ -4,19 +4,49 @@
 // components according to the Material 3 design spec.
 // Learn more about theming and how to use it for your application's
 // custom components at https://material.angular.dev/guide/theming
-@use '@angular/material' as mat;
+@use "tailwindcss";
 
+
+@use '@angular/material' as mat;
+@include mat.core();
+@include mat.elevation-classes();
+// 文字排版類別
+// 3. 引入其他常用的 utility classes（如果需要）
+@include mat.strong-focus-indicators();
+@import 'notyf/notyf.min.css';
+
+$my-theme: mat.define-theme((
+  color: (
+    theme-type: light,
+    primary: mat.$red-palette,
+    tertiary: mat.$blue-palette,
+  ),
+  typography: (
+    brand-family: 'Roboto, sans-serif',
+    plain-family: 'Roboto, sans-serif',
+  ),
+  density: (
+    scale: 0,
+  )
+));
+// 5. 應用主題到所有組件
 html {
-  @include mat.theme((
-    color: (
-      // primary: mat.$azure-palette,
-      primary: mat.$red-palette,
-      tertiary: mat.$blue-palette,
-    ),
-    typography: Roboto,
-    density: 0,
-  ));
+  @include mat.all-component-themes($my-theme);
+  @include mat.typography-hierarchy($my-theme); 
+  @include mat.all-component-densities($my-theme);
 }
+
+// html {
+//   @include mat.theme((
+//     color: (
+//       // primary: mat.$azure-palette,
+//       primary: mat.$red-palette,
+//       tertiary: mat.$blue-palette,
+//     ),
+//     typography: Roboto,
+//     density: 0,
+//   ));
+// }
 
 body {
   // Default the application to a light color theme. This can be changed to

@@ -2,7 +2,7 @@
     <mat-card class="login-card" appearance="outlined">
         <div class="title" >Enter Code</div>
         <mat-form-field appearance="outline">
-        <input matInput type="password" [(ngModel)]="password" (keydown.enter)="login()" />
+        <input matInput #passwordInput type="text" [(ngModel)]="password" (keydown.enter)="login()"  />
         </mat-form-field>
         <mat-card-actions style="justify-content: center;">
             <button (click)="login()" matButton="filled" [disabled]="isLoading">

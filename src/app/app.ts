@@ -1,6 +1,5 @@
 import { Component, signal, ViewChild, inject } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import {Hello} from './components/hello/hello';
 import {MatToolbarModule} from '@angular/material/toolbar';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import {MatSidenavModule, MatSidenav} from '@angular/material/sidenav';
@@ -10,7 +9,7 @@ import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, Hello, MatSlideToggleModule, MatToolbarModule, MatIconModule, MatButtonModule, MatSidenavModule, MatListModule],
+  imports: [RouterOutlet, MatSlideToggleModule, MatToolbarModule, MatIconModule, MatButtonModule, MatSidenavModule, MatListModule],
   templateUrl: './app.html',
   styleUrl: './app.scss'
 })

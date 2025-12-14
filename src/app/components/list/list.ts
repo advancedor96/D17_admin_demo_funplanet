@@ -4,18 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import {MatTableModule} from '@angular/material/table';
 import {MatButtonModule} from '@angular/material/button';
- const ELEMENT_DATA = [
-  {position: 1, name: 'Hydrogen', weight: 1.0079, symbol: 'H'},
-  {position: 2, name: 'Helium', weight: 4.0026, symbol: 'He'},
-  {position: 3, name: 'Lithium', weight: 6.941, symbol: 'Li'},
-  {position: 4, name: 'Beryllium', weight: 9.0122, symbol: 'Be'},
-  {position: 5, name: 'Boron', weight: 10.811, symbol: 'B'},
-  {position: 6, name: 'Carbon', weight: 12.0107, symbol: 'C'},
-  {position: 7, name: 'Nitrogen', weight: 14.0067, symbol: 'N'},
-  {position: 8, name: 'Oxygen', weight: 15.9994, symbol: 'O'},
-  {position: 9, name: 'Fluorine', weight: 18.9984, symbol: 'F'},
-  {position: 10, name: 'Neon', weight: 20.1797, symbol: 'Ne'},
-];
+import { MatTableDataSource } from '@angular/material/table';
 
 @Component({
   selector: 'app-list',
@@ -28,16 +17,17 @@ import {MatButtonModule} from '@angular/material/button';
 export class List implements OnInit {
   http = inject(HttpClient);
   router = inject(Router);
-
+  isLoading = false;
   items: any[] = [];
+
   errorMsg: string | null = null;
   obj:{ year: number; month: number } = {
     year: 0,
     month: 0
   }
 
-  displayedColumns: string[] = ['position', 'name', 'weight', 'symbol'];
-  dataSource = ELEMENT_DATA;
+  displayedColumns: string[] = ['event_type', "name",  'session_type','month',  'image', 'publish', "action", "order"];
+  dataSource = new MatTableDataSource<any>();
 
 
   getMonthAndDate(){
@@ -53,12 +43,14 @@ export class List implements OnInit {
   }
   loadList() {
     this.errorMsg = null;
+    this.isLoading = true;
     const url = myGlobal.apiUrl + '/list';
     // console.log('List.loadList() called, token=', localStorage.getItem('token') ? 'present' : 'null');
     this.http.get(url).subscribe({
       next: (res: any) => {
         this.items = res?.data ?? res ?? [];
         console.log('items:', this.items);
+        this.dataSource.data = this.items;
       },
       error: (err) => {
         this.errorMsg = err?.error?.msg || err?.message || '讀取清單失敗';
