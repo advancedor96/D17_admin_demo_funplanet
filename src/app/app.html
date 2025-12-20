@@ -1,20 +1,35 @@
+<p-toast position="top-center" key="tl" />
 <div class="appLayout">
-  <mat-toolbar class="my_toolbar" color="primary">
-    <button matIconButton (click)="snav.toggle()"><mat-icon>menu</mat-icon></button>
-    <h1>Fun Dashboard</h1>
-  </mat-toolbar>
-  <mat-sidenav-container>
-    <mat-sidenav #snav mode="over">
-      <mat-nav-list>
-        <a mat-list-item (click)="logout()">Logout</a>
-        <a mat-list-item routerLink="/login" (click)="snav.close()">Login</a>
-        <a mat-list-item routerLink="/list" (click)="snav.close()">List</a>
-      </mat-nav-list>
 
-    </mat-sidenav>
-    <mat-sidenav-content class="my_main">
-      <router-outlet></router-outlet>
-    </mat-sidenav-content>
-  </mat-sidenav-container>
+  <p-toolbar class="my_toolbar">
+    <ng-template #start>
+      <p-button icon="pi pi-bars" [text]="true" [style]="{'color': 'white'}" severity="primary" (onClick)="drawerOpen.set(!drawerOpen())"></p-button>
+      <h1 class="ml-3 text-white text-xl">Fun Dashboard</h1>
+    </ng-template>
+
+  </p-toolbar> 
+
+  <p-drawer [(visible)]="drawerOpen" [showCloseIcon]="false" styleClass="xxxx_mydrawer">
+    <ng-template #header>
+      <div class="flex items-center gap-4 w-full my_toolbar h-full pl-2">
+          <p-button 
+              icon="pi pi-times" 
+              [text]="true" 
+              [rounded]="true"
+              severity="secondary"
+              styleClass="!text-white"
+              (onClick)="drawerOpen.set(false)"
+          />
+          <span class="font-bold text-xl">Fun Planet</span>
+      </div>
+    </ng-template>
+    <p-menu [model]="Menuitems" styleClass="xxx_myDrawerMenu" class="w-full">
+      <ng-template #item let-item>
+        <span class="text-primary font-bold text-2xl">{{ item.label }}</span>
+      </ng-template>
+    </p-menu>
+  </p-drawer>
+  <router-outlet></router-outlet>
+
 
 </div>

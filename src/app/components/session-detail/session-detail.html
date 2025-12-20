@@ -1,0 +1,59 @@
+<div class="p-4">
+  <p-image [src]="'https://api.funplanet.tw/upload/' + image()" alt="Image" />
+  <div class="text-xl">Name: </div>
+  <div>{{ name() }}</div>
+  <div class="text-xl">Description: </div>
+  <div class="Description" [innerHTML]="text()"></div>
+  <div class="text-xl"># of People: </div>
+  <div>{{min()}} ~ {{max()}} </div>
+  <div class="text-xl">Standby people: </div>
+  <div>{{max_standby()}} </div>
+  <div class="text-xl">Show/Hide: </div>
+  <div>{{publish()===1 ? 'Show' : 'Hide'}} </div>
+
+  <p-accordion value="0">
+    <p-accordion-panel value="0">
+      <p-accordion-header class="flex">
+        <span class="!text-3xl">Live List</span>
+        <span class="ml-auto"><p-chip label="Accepted" class="mr-1 !bg-emerald-500 !text-white" /><p-chip label="Standby" class="mr-2 !bg-sky-500 !text-white" /></span>
+        
+      </p-accordion-header>
+      <p-accordion-content>
+        <p-table [value]="timeList()">
+          <ng-template #header>
+            <tr>
+              <th>Time</th>
+              <th>Name</th>
+              <th>Baby List</th>
+            </tr>
+          </ng-template>
+          <ng-template #body let-time>
+            <tr>
+              <td>{{ time.datetime }}</td>
+              <td>{{ time.text }}</td>
+              <td>
+                <!-- 正取名單 (0 到 max) -->
+                @for (child of time.childList?.slice(0, max()); track $index) {
+                  <p-chip 
+                    [label]="child.child_name" 
+                    class="mr-1 mb-1 !bg-emerald-500 !text-white" />
+                }
+                <!-- 候補名單 (max 到 結束) -->
+                @for (child of time.childList?.slice(max(), time.childList?.length); track $index) {
+                  <p-chip 
+                    [label]="child.child_name" 
+                    class="mr-1 !bg-sky-500 !text-white" />
+                }
+
+              </td>
+            </tr>
+          </ng-template>
+        </p-table>
+      </p-accordion-content>
+    </p-accordion-panel>
+  </p-accordion>
+
+</div>
+<p-blockui [blocked]="isLoading()" fullScreen="true">
+  <p-progressSpinner />
+</p-blockui>

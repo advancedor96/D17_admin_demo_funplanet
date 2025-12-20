@@ -1,21 +1,35 @@
   <div class="loginContainer">
-    <mat-card class="login-card" appearance="outlined">
-        <div class="title" >Enter Code</div>
-        <mat-form-field appearance="outline">
-        <input matInput #passwordInput type="text" [(ngModel)]="password" (keydown.enter)="login()"  />
-        </mat-form-field>
-        <mat-card-actions style="justify-content: center;">
-            <button (click)="login()" matButton="filled" [disabled]="isLoading">
-              @if (isLoading) {
-                <mat-spinner diameter="27" class="whiteSpinner"></mat-spinner>
-              } @else {
-                Login
-              }
-              </button>
-        </mat-card-actions>
-        @if (errorMsg) {
-        <div style="color: #b00020; margin: 8px 0; text-align:center;">
-          {{ errorMsg }}
-        </div> }
-    </mat-card>
+    <p-card class="login-card">
+      <ng-template #header>
+        <div class="title text-3xl">Enter Code</div>
+      </ng-template>
+
+      <ng-template #content>
+        <p-floatlabel>
+          <p-password 
+            #passwordInput
+            id="password"
+            [feedback]="false"
+            [(ngModel)]="password"
+            [toggleMask]="true"
+            (keydown.enter)="login()"
+            [disabled]="isLoading()"
+            class="w-full"
+            size="large"
+          />
+          <label for="password">password</label>
+        </p-floatlabel>
+      </ng-template>
+      <ng-template #footer>
+        <div class="flex justify-center w-full mt-3">
+          <p-button label="Login" (onClick)="login()" [disabled]="isLoading()" [loading]="isLoading()" severity="help"  styleClass="!bg-purple-800"></p-button>
+        </div>
+        <div class="text-red-600 mt-3 text-center">
+          {{ errorMsg() }}
+        </div>
+      </ng-template>
+
+    </p-card>
+
+
   </div>

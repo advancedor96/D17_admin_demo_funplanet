@@ -1,51 +1,64 @@
-<p>List page</p>
-<div class="aaa">最大標題</div>
-<h2 class="mat-headline-2">最大標題</h2>
-<div class="mat-display-4">特大文字</div>
-<button matButton="elevated">Basic</button>
-<h1 class="text-3xl font-bold underline">
-  Hello world!
-</h1>
-@if(isLoading){
-<div class="">
-  <table mat-table [dataSource]="dataSource" class="mat-elevation-z3 my__TTTable">
-    <ng-container matColumnDef="event_type">
-      <th mat-header-cell *matHeaderCellDef>Event Type</th>
-      <td mat-cell *matCellDef="let e"> {{e.event_type}} </td>
-    </ng-container>
-    <ng-container matColumnDef="name">
-      <th mat-header-cell *matHeaderCellDef>Name</th>
-      <td mat-cell *matCellDef="let e"> {{e.name}} </td>
-    </ng-container>
-    <ng-container matColumnDef="session_type">
-      <th mat-header-cell *matHeaderCellDef>Session Type</th>
-      <td mat-cell *matCellDef="let e"> {{e.type}} </td>
-    </ng-container>
-    <ng-container matColumnDef="month">
-      <th mat-header-cell *matHeaderCellDef>Month</th>
-      <td mat-cell *matCellDef="let e"> {{e.year_month}} </td>
-    </ng-container>
-    <ng-container matColumnDef="image">
-      <th mat-header-cell *matHeaderCellDef>Image</th>
-      <td mat-cell *matCellDef="let e">
-        <img [src]="e.image" alt="Image" width="50" />
-      </td>
-    </ng-container>
-    <ng-container matColumnDef="publish">
-      <th mat-header-cell *matHeaderCellDef>Publish</th>
-      <td mat-cell *matCellDef="let e"> {{ e.publish ? 'Yes' : 'No' }} </td>
-    </ng-container>
-    <ng-container matColumnDef="action">
-      <th mat-header-cell *matHeaderCellDef>Actions</th>
-      <td mat-cell *matCellDef="let e"> 嘿嘿嘿</td>
-    </ng-container>
-    <ng-container matColumnDef="order">
-      <th mat-header-cell *matHeaderCellDef>Order</th>
-      <td mat-cell *matCellDef="let e"> {{e.sort_order}} </td>
-    </ng-container>
+<div class="container mx-auto px-6 pt-2">
+  <div class="flex justify-between">
+    <div class="text-3xl font-bold">Event List</div>
+    <div>
+      <p-button icon="pi pi-angle-left" [rounded]="true" severity="help" (onClick)="goPreviousMonth()" [outlined]="true"  class="mr-2"/>
+      <p-select [(ngModel)]="selected_year" [options]="year_list()" (onChange)="changeYear($event)" class="mr-2"></p-select>
+      <p-select [(ngModel)]="selected_month" [options]="[01,02,03,04,05,06,07,08,09,10,11,12]" (onChange)="changeMonth($event)"></p-select>
+      <p-button icon="pi pi-angle-right" [rounded]="true" severity="help" [outlined]="true" (onClick)="goNextMonth()"  class="ml-2" />
+    </div>
+  </div>
 
-    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-  </table>
+
+  <p-table [value]="sessionList()" [tableStyle]="{ 'min-width': '50rem' }" class="shadow-lg" [loading]="isLoading()" class="xxxx_myTable" [rowHover]="true">
+    <ng-template #header>
+      <tr>
+        <th>Event Type</th>
+        <th>Name</th>
+        <th>Session Type</th>
+        <th style="min-width: 100px;">Month</th>
+        <th>Image</th>
+        <th>publish</th>
+        <th>action</th>
+        <th>Order</th>
+      </tr>
+    </ng-template>
+    <ng-template #body let-ses>
+      <tr>
+          <td>  
+            @if (ses.event_type === 'session'){
+              <p-tag value="Session" icon="pi pi-user" severity="info"/>
+            } @else {
+              <p-tag value="Theater" icon="pi pi-users" severity="warn" />
+            }
+          </td>
+          <td>{{ ses.name }}</td>
+          <td>{{ ses.type }}</td>
+          <td>{{ ses.year_month }}</td>
+          <td>
+            <p-image [src]="`https://api.funplanet.tw/upload/`+ses.image" width="35"></p-image>
+          </td>
+          <td>
+            @if (ses.publish === 1){
+              Show
+            } @else {
+              <i class="pi pi-eye-slash" style="color: red"></i>
+              Hide
+            }
+          </td>
+          <td>
+            <a [routerLink]="['/sessionDetail', ses.s_or_t_id]" pButton text severity="info" styleClass="!text-blue-500 hover:!text-blue-900" >
+              <span pButtonLabel>Info</span>
+            </a>
+            <p-button label="Edit" variant="text" severity="warn" />
+            <p-button label="Delete" variant="text" severity="danger" />
+          </td>
+          <td>{{ ses.sort_order }}</td>
+      </tr>
+    </ng-template>
+  </p-table>
 </div>
-}
+
+
+
+

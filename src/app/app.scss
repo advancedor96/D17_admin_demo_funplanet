@@ -1,12 +1,38 @@
+.appLayout{
+    min-height: 100vh;
+}
 .my_toolbar{
     
     background-color: var(--myPurple);
     box-shadow: var(--mat-sys-level3);
     color: white;
+    border: 0;
+    border-radius: 0;
 }
 .mdc-icon-button{
     color: white;
 }
-.my_main{
-    min-height: calc(100vh - 64px); 
+
+::ng-deep .xxx_myDrawerMenu {
+    border: 0;
+    .p-menu-list{
+        padding: 0;
+        .p-menu-item{
+            // background-color: yellow;
+            height: 60px;
+            line-height: 60px;
+            cursor: pointer;
+            padding-left: 8px;
+        }
+    } 
+}
+::ng-deep .xxxx_mydrawer {
+    .p-drawer-content {
+        padding: 0;
+    }
+    .p-drawer-header {
+        padding: 0;
+        height: 62px;
+    }
+
 }

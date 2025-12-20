@@ -2,3 +2,6 @@
   font: var(--mat-sys-display-small);
   letter-spacing: var(--mat-sys-display-small-tracking);
 }
+.xxxx_myTable ::ng-deep tr > td {
+  // padding: 4px;
+}
