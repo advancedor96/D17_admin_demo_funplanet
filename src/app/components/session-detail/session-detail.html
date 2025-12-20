@@ -53,7 +53,86 @@
     </p-accordion-panel>
   </p-accordion>
 
+  <!-- 訂單資料庫 -->
+  <div class="flex mt-16 mb-4 justify-between items-center">
+    <div class="text-4xl font-black flex items-center">
+      訂單資料庫
+      <i class="pi pi-database ml-2"></i>
+    </div>
+    <p-button  icon="pi pi-download"  severity="info"  [outlined]="true"  />
+  </div>
+
+  @for (time of timeList(); track $index; let i = $index) {
+    <div class="mb-16">
+      <!-- 時間標題 -->
+      <div class="text-xl bg-purple-700 text-white text-center py-2 rounded-t">
+        {{ time.datetime }}
+      </div>
+      
+      <!-- 批次操作按鈕 -->
+      <div class="flex mb-2 p-4 bg-gray-50 rounded-b">
+        <p-button 
+          label="批次刪除 (0)"
+          severity="danger" 
+          [outlined]="true"
+          [disabled]="true"
+          class="mr-2" />
+      </div>
+
+      <!-- 訂單表格 -->
+      <div class="shadow-lg rounded overflow-hidden">
+        <p-table 
+          [value]="time.orderList || []" 
+          [loading]="isLoading()"
+          [rowHover]="true">
+          <ng-template #header>
+            <tr>
+              <th style="width: 3rem">
+              </th>
+              <th>#</th>
+              <th>小朋友稱呼</th>
+              <th>家長LINE稱呼</th>
+              <th>家長手機</th>
+              <th>(線上場)付款方式</th>
+              <th>動作</th>
+              <th>報名時間</th>
+              <th style="width: 170px">備註</th>
+            </tr>
+          </ng-template>
+          <ng-template #body let-order let-rowIndex="rowIndex">
+            <tr>
+              <td>
+              </td>
+              <td>{{ rowIndex + 1 }}</td>
+              <td>{{ order.childName }}</td>
+              <td>{{ order.parentLine }}</td>
+              <td>{{ order.phone }}</td>
+              <td>{{ order.onlinePayment }}</td>
+              <td>
+                <p-button 
+                  icon="pi pi-trash" 
+                  severity="danger" 
+                  [text]="true"
+                   />
+              </td>
+              <td>{{ order.createdAt }}</td>
+              <td>
+                <div class="flex items-center">
+                  <i class="pi pi-pencil text-blue-500 cursor-pointer mr-2" 
+                     ></i>
+                  <span>{{ order.note }}</span>
+                </div>
+              </td>
+            </tr>
+          </ng-template>
+        </p-table>
+      </div>
+    </div>
+  }
+
 </div>
+
+
 <p-blockui [blocked]="isLoading()" fullScreen="true">
   <p-progressSpinner />
 </p-blockui>

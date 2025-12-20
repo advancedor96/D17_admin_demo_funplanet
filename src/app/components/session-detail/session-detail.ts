@@ -10,11 +10,12 @@ import { AccordionModule } from 'primeng/accordion';
 import { ChipModule } from 'primeng/chip';
 import { TableModule } from 'primeng/table';
 import { CommonModule } from '@angular/common';
+import { ButtonModule } from 'primeng/button';
 import dayjs from 'dayjs';
 
 @Component({
   selector: 'app-session-detail',
-  imports: [ImageModule, BlockUIModule, ProgressSpinnerModule, AccordionModule, ChipModule, CommonModule, TableModule],
+  imports: [ImageModule, BlockUIModule, ProgressSpinnerModule, AccordionModule, ChipModule, CommonModule, TableModule, ButtonModule],
   templateUrl: './session-detail.html',
   styleUrl: './session-detail.scss',
 })
@@ -94,7 +95,8 @@ export class SessionDetail implements OnInit {
           return {
             ...e,
             online_payment: myOnlinePayment,
-            time_id: time_id
+            time_id: time_id,
+            createdAt: dayjs(e.createdAt).format('YYYY-MM-DD HH:mm:ss')
           };
         });
 
