@@ -9,6 +9,9 @@
     border: 0;
     border-radius: 0;
 }
+.xxxx_compact_toast ::ng-deep .p-toast-message-content{
+    height: 46px;
+}
 .mdc-icon-button{
     color: white;
 }

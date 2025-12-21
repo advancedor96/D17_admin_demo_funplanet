@@ -9,11 +9,10 @@ import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
 import { PasswordModule } from 'primeng/password';
 import { FloatLabelModule } from 'primeng/floatlabel';
-import { ToastModule } from 'primeng/toast';
 
 @Component({
   selector: 'app-login',
-  imports: [FormsModule, CardModule, ButtonModule, InputTextModule, PasswordModule, FloatLabelModule, ToastModule],
+  imports: [FormsModule, CardModule, ButtonModule, InputTextModule, PasswordModule, FloatLabelModule],
   templateUrl: './login.html',
   styleUrl: './login.scss',
 })
@@ -33,14 +32,16 @@ export class Login implements OnInit, AfterViewInit{
   ngOnInit(){
     // console.log('ssss', myGlobal.appName);
     // this.getMonthAndDate();
+
   }
 
   ngAfterViewInit() {
+    this.messageService.add({ severity: 'error', summary: 'Login failed', key: 'tl', life: 60*1000 });
     setTimeout(() => {
       if (this.passwordInput?.nativeElement) {
         this.passwordInput.nativeElement.focus();
       }
-    });
+    }, 100);
   }
 
   login() {

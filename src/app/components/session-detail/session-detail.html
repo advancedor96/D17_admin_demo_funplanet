@@ -1,18 +1,18 @@
 <div class="p-4">
-  <p-image [src]="'https://api.funplanet.tw/upload/' + image()" alt="Image" />
-  <div class="text-xl">Name: </div>
-  <div>{{ name() }}</div>
-  <div class="text-xl">Description: </div>
-  <div class="Description" [innerHTML]="text()"></div>
-  <div class="text-xl"># of People: </div>
-  <div>{{min()}} ~ {{max()}} </div>
-  <div class="text-xl">Standby people: </div>
-  <div>{{max_standby()}} </div>
-  <div class="text-xl">Show/Hide: </div>
-  <div>{{publish()===1 ? 'Show' : 'Hide'}} </div>
+  <p-image [src]="'https://api.funplanet.tw/upload/' + image()" alt="Image" width="940" styleClass="object-cover"/>
+  <div class="text-xl text-gray-600 font-medium mt-4">Event Name</div>
+  <p class="text-base mb-4">{{ name() }}</p>
+  <div class="text-xl text-gray-600 font-medium">Description</div>
+  <p class="text-base mb-4 whitespace-pre-wrap" [innerHTML]="text()"></p>
+  <div class="text-xl text-gray-600 font-medium">Capacity</div>
+  <p class="text-base mb-4">{{min()}} ~ {{max()}} participants</p>
+  <div class="text-xl text-gray-600 font-medium">Waitlist Capacity</div>
+  <p class="text-base mb-4">{{max_standby()}} participants</p>
+  <div class="text-xl text-gray-600 font-medium">Publication Status</div>
+  <p class="text-base mb-4">{{publish()===1 ? 'Published' : 'Hidden'}} </p>
 
-  <p-accordion value="0">
-    <p-accordion-panel value="0">
+  <p-accordion >
+    <p-accordion-panel >
       <p-accordion-header class="flex">
         <span class="!text-3xl">Live List</span>
         <span class="ml-auto"><p-chip label="Accepted" class="mr-1 !bg-emerald-500 !text-white" /><p-chip label="Standby" class="mr-2 !bg-sky-500 !text-white" /></span>
