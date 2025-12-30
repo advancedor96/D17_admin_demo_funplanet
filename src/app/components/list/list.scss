@@ -1,12 +1,18 @@
-.container{
-  min-width: 100%;
+.listContainer{
+  // min-width: 100%;
 }
 .aaa {
   font: var(--mat-sys-display-small);
   letter-spacing: var(--mat-sys-display-small-tracking);
 }
 .xxxx_myTable {
-  min-width: 100%;
+  ::ng-deep .p-datatable-table{
+    min-width: auto !important;
+  }
+  // min-width: 100%;
+  tr > th {
+    padding: 16px 4px;
+  }
 }
 .xxxx_myTable ::ng-deep tr > td {
   padding: 4px;

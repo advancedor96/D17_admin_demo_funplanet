@@ -7,7 +7,7 @@ import { MessageService } from 'primeng/api';
 import { CardModule } from 'primeng/card';
 import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
-import { PasswordModule } from 'primeng/password';
+import { PasswordModule, Password } from 'primeng/password';
 import { FloatLabelModule } from 'primeng/floatlabel';
 
 @Component({
@@ -19,11 +19,11 @@ import { FloatLabelModule } from 'primeng/floatlabel';
 export class Login implements OnInit, AfterViewInit{
 
   // passwordInput = viewChild<ElementRef<HTMLInputElement>>('passwordInput');
-  @ViewChild('passwordInput') passwordInput!: ElementRef<HTMLInputElement>;
+  @ViewChild('passwordInput') passwordInput!: Password;
   http = inject(HttpClient);
   router = inject(Router);
   messageService = inject(MessageService);
-  password = signal('');
+  password = signal('6666');
   isLoading=signal(false);
   errorMsg = signal<string | null>(null);
 
@@ -36,12 +36,11 @@ export class Login implements OnInit, AfterViewInit{
   }
 
   ngAfterViewInit() {
-    this.messageService.add({ severity: 'error', summary: 'Login failed', key: 'tl', life: 60*1000 });
+    // this.messageService.add({ severity: 'error', summary: 'Login failed', key: 'tl', life: 60*1000 });
     setTimeout(() => {
-      if (this.passwordInput?.nativeElement) {
-        this.passwordInput.nativeElement.focus();
-      }
-    }, 100);
+      const inputElement = this.passwordInput.el.nativeElement.querySelector('input');
+      inputElement.focus();
+    }, 10);
   }
 
   login() {

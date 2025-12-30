@@ -1,4 +1,4 @@
-<div class="container mx-2 px-2 pt-2">
+<div class="listContainer mx-2 px-2 pt-2">
   <div class="flex justify-between">
     <div class="text-3xl font-bold">Event List</div>
     <div>
@@ -10,7 +10,7 @@
   </div>
 
 
-  <p-table [value]="sessionList()" [tableStyle]="{ 'min-width': '50rem' }" class="shadow-lg" [loading]="isLoading()" class="xxxx_myTable" [rowHover]="true">
+  <p-table [value]="sessionList()" [tableStyle]="{ 'min-width': '50rem' }" class="shadow-lg" [loading]="isLoading()" class="xxxx_myTable" [rowHover]="true" responsiveLayout="stack" breakpoint="570px">
     <ng-template #header>
       <tr>
         <th>Event Type</th>
@@ -19,7 +19,7 @@
         <th style=" min-width: 100px;">Month</th>
         <th>Image</th>
         <th>publish</th>
-        <th>action</th>
+        <th style="text-align: center; min-width: 100px;">action</th>
         <th>Order</th>
       </tr>
     </ng-template>
