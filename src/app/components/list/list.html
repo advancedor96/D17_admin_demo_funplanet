@@ -1,64 +1,77 @@
 <div class="listContainer mx-2 px-2 pt-2">
-  <div class="flex justify-between">
-    <div class="text-3xl font-bold">Event List</div>
-    <div>
-      <p-button icon="pi pi-angle-left" [rounded]="true" severity="help" (onClick)="goPreviousMonth()" [outlined]="true"  class="mr-2"/>
-      <p-select [(ngModel)]="selected_year" [options]="year_list()" (onChange)="changeYear($event)" class="mr-2"></p-select>
-      <p-select [(ngModel)]="selected_month" [options]="[01,02,03,04,05,06,07,08,09,10,11,12]" (onChange)="changeMonth($event)"></p-select>
-      <p-button icon="pi pi-angle-right" [rounded]="true" severity="help" [outlined]="true" (onClick)="goNextMonth()"  class="ml-2" />
+  <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
+    <div class="text-3xl font-bold text-gray-800 dark:text-white">Event List</div>
+    <div class="flex items-center gap-2 bg-white dark:bg-gray-800 p-3 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700">
+      <p-button icon="pi pi-angle-left" [rounded]="true" severity="help" (onClick)="goPreviousMonth()" [outlined]="true" size="small" class="!h-8 !w-8" />
+      <p-select [(ngModel)]="selected_year" [options]="year_list()" (onChange)="changeYear($event)" class="min-w-[80px]" size="small" />
+      <p-select [(ngModel)]="selected_month" [options]="[01,02,03,04,05,06,07,08,09,10,11,12]" (onChange)="changeMonth($event)" class="min-w-[60px]" size="small" />
+      <p-button icon="pi pi-angle-right" [rounded]="true" severity="help" [outlined]="true" (onClick)="goNextMonth()" size="small" class="!h-8 !w-8" />
     </div>
   </div>
 
-
-  <p-table [value]="sessionList()" [tableStyle]="{ 'min-width': '50rem' }" class="shadow-lg" [loading]="isLoading()" class="xxxx_myTable" [rowHover]="true" responsiveLayout="stack" breakpoint="570px">
+  <p-table [value]="sessionList()" [tableStyle]="{ 'min-width': '50rem' }" class="shadow-xl rounded-lg overflow-hidden border border-gray-200 dark:border-gray-700" [loading]="isLoading()" styleClass="xxxx_myTable" [rowHover]="true" responsiveLayout="stack" breakpoint="570px" [paginator]="sessionList().length > 10" [rows]="10" [showCurrentPageReport]="true" currentPageReportTemplate="顯示 {first} 到 {last} 筆，共 {totalRecords} 筆">
     <ng-template #header>
       <tr>
-        <th>Event Type</th>
-        <th>Name</th>
-        <th>Session Type</th>
-        <th style=" min-width: 100px;">Month</th>
-        <th>Image</th>
-        <th>publish</th>
-        <th style="text-align: center; min-width: 100px;">action</th>
-        <th>Order</th>
+        <th >Event Type</th>
+        <th class="!text-white !font-semibold">Name</th>
+        <th class="!text-white !font-semibold">Session Type</th>
+        <th class="!text-white !font-semibold" style="min-width: 100px;">Month</th>
+        <th class="!text-white !font-semibold">Image</th>
+        <th class="!text-white !font-semibold">Status</th>
+        <th class="!text-white !font-semibold" style="text-align: center; min-width: 120px;">Actions</th>
+        <th class="!text-white !font-semibold">Order</th>
       </tr>
     </ng-template>
-    <ng-template #body let-ses>
-      <tr>
-          <td>  
-            @if (ses.event_type === 'session'){
-              <p-tag value="Session" icon="pi pi-user" severity="info"/>
-            } @else {
-              <p-tag value="Theater" icon="pi pi-users" severity="warn" />
-            }
-          </td>
-          <td>{{ ses.name }}</td>
-          <td>{{ ses.type }}</td>
-          <td>{{ ses.year_month }}</td>
-          <td>
-            <p-image [src]="`https://api.funplanet.tw/upload/`+ses.image" width="35"></p-image>
-          </td>
-          <td>
-            @if (ses.publish === 1){
+    <ng-template #body let-ses let-rowIndex="rowIndex">
+      <tr class="hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors duration-200" [class.bg-gray-50]="rowIndex % 2 === 1" [class.dark:bg-gray-900]="rowIndex % 2 === 1">
+        <td class="align-middle">  
+          @if (ses.event_type === 'session'){
+            <p-tag value="Session" icon="pi pi-user" severity="info" class="!text-xs !font-medium"/>
+          } @else {
+            <p-tag value="Theater" icon="pi pi-users" severity="warn" class="!text-xs !font-medium"/>
+          }
+        </td>
+        <td class="align-middle font-medium text-gray-900 dark:text-white">{{ ses.name }}</td>
+        <td class="align-middle text-gray-600 dark:text-gray-300">{{ ses.type }}</td>
+        <td class="align-middle">
+          <span class="bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200 px-2 py-1 rounded-full text-xs font-medium">{{ ses.year_month }}</span>
+        </td>
+        <td class="align-middle">
+          <div class="flex justify-center">
+            <p-image [src]="`https://api.funplanet.tw/upload/`+ses.image" width="40" height="40" class="rounded-md shadow-sm border border-gray-200 dark:border-gray-600 hover:shadow-md transition-shadow" [preview]="true" />
+          </div>
+        </td>
+        <td class="align-middle">
+          @if (ses.publish === 1){
+            <span class="inline-flex items-center gap-1 bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200 px-2 py-1 rounded-full text-xs font-medium">
+              <i class="pi pi-eye text-xs"></i>
               Show
-            } @else {
-              <i class="pi pi-eye-slash" style="color: red"></i>
+            </span>
+          } @else {
+            <span class="inline-flex items-center gap-1 bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200 px-2 py-1 rounded-full text-xs font-medium">
+              <i class="pi pi-eye-slash text-xs"></i>
               Hide
-            }
-          </td>
-          <td>
-            <a [routerLink]="['/sessionDetail', ses.s_or_t_id]" pButton text severity="info" styleClass="!text-blue-500 hover:!text-blue-900" >
-              <span pButtonLabel>Info</span>
-            </a>
-            <p-button label="Edit" variant="text" severity="warn" />
-            <p-button label="Delete" variant="text" severity="danger" />
-          </td>
-          <td>{{ ses.sort_order }}</td>
+            </span>
+          }
+        </td>
+        <td class="align-middle">
+          <div class="flex justify-center gap-1">
+            <a [routerLink]="['/sessionDetail', ses.s_or_t_id]" pButton icon="pi pi-info-circle" text severity="info" size="small" styleClass="!text-blue-600 hover:!text-blue-800 !p-2" pTooltip="View" tooltipPosition="top" ></a>
+            <p-button icon="pi pi-pencil" text severity="warn" size="small" styleClass="!text-orange-600 hover:!text-orange-800 !p-2" pTooltip="Edit" tooltipPosition="top" />
+            <p-button icon="pi pi-trash" text severity="danger" size="small" styleClass="!text-red-600 hover:!text-red-800 !p-2" pTooltip="Delete" tooltipPosition="top" />
+          </div>
+        </td>
+        <td class="align-middle text-center">
+          <span class="bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-200 px-2 py-1 rounded-full text-xs font-medium">{{ ses.sort_order }}</span>
+        </td>
       </tr>
+    </ng-template>
+    <ng-template #empty>
+      <div class="text-center py-8 text-gray-500 dark:text-gray-400">
+        <i class="pi pi-inbox text-4xl mb-4 block"></i>
+        <p class="text-lg">No events found</p>
+        <p class="text-sm">Try selecting a different month or year</p>
+      </div>
     </ng-template>
   </p-table>
 </div>
-
-
-
-

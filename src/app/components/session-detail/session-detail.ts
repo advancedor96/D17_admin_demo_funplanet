@@ -11,11 +11,14 @@ import { ChipModule } from 'primeng/chip';
 import { TableModule } from 'primeng/table';
 import { CommonModule } from '@angular/common';
 import { ButtonModule } from 'primeng/button';
+import { TooltipModule } from 'primeng/tooltip';
+import { CheckboxModule } from 'primeng/checkbox';
+import { TagModule } from 'primeng/tag';
 import dayjs from 'dayjs';
 
 @Component({
   selector: 'app-session-detail',
-  imports: [ImageModule, BlockUIModule, ProgressSpinnerModule, AccordionModule, ChipModule, CommonModule, TableModule, ButtonModule],
+  imports: [ImageModule, BlockUIModule, ProgressSpinnerModule, AccordionModule, ChipModule, CommonModule, TableModule, ButtonModule, TooltipModule, CheckboxModule, TagModule],
   templateUrl: './session-detail.html',
   styleUrl: './session-detail.scss',
 })

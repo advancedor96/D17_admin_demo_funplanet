@@ -1,3 +1,103 @@
-.Description{
-    white-space: pre-wrap;
+.Description {
+  white-space: pre-wrap;
+}
+
+// 現代化表格樣式
+::ng-deep .modern-table {
+  .p-datatable-table {
+    border-collapse: separate;
+    border-spacing: 0;
+  }
+  
+  .p-datatable-thead > tr > th {
+    background: #f8fafc;
+    color: #374151;
+    font-weight: 600;
+    padding: 16px 12px;
+    border-bottom: 2px solid #e5e7eb;
+    
+    @media (prefers-color-scheme: dark) {
+      background: #374151;
+      color: #f9fafb;
+      border-bottom-color: #4b5563;
+    }
+    
+    &:first-child {
+      border-top-left-radius: 8px;
+    }
+    
+    &:last-child {
+      border-top-right-radius: 8px;
+    }
+  }
+  
+  .p-datatable-tbody > tr > td {
+    padding: 16px 12px;
+    border-bottom: 1px solid #f3f4f6;
+    vertical-align: middle;
+    
+    @media (prefers-color-scheme: dark) {
+      border-bottom-color: #4b5563;
+    }
+  }
+  
+  .p-datatable-tbody > tr:hover {
+    background-color: #f8fafc !important;
+    
+    @media (prefers-color-scheme: dark) {
+      background-color: #374151 !important;
+    }
+  }
+}
+
+// Accordion 樣式優化
+::ng-deep .p-accordion {
+  .p-accordion-header {
+    border-radius: 16px 16px 0 0;
+    
+    .p-accordion-header-link {
+      border-radius: 16px 16px 0 0;
+      padding: 20px 24px;
+    }
+  }
+  
+  .p-accordion-content {
+    border-radius: 0 0 16px 16px;
+  }
+}
+
+// 響應式調整
+@media (max-width: 768px) {
+  ::ng-deep .modern-table {
+    .p-datatable-thead > tr > th,
+    .p-datatable-tbody > tr > td {
+      padding: 12px 8px;
+      font-size: 0.875rem;
+    }
+  }
+}
+
+// 卡片懸停效果
+.hover-card {
+  transition: all 0.3s ease;
+  
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  }
+}
+
+// 漸層背景動畫
+@keyframes gradientShift {
+  0%, 100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+.animated-gradient {
+  background-size: 200% 200%;
+  animation: gradientShift 6s ease infinite;
 }

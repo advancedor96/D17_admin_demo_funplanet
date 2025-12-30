@@ -10,6 +10,7 @@ import { SelectChangeEvent, SelectModule } from 'primeng/select';
 import { ImageModule } from 'primeng/image';
 import { RouterModule } from '@angular/router';
 import { Subject, debounceTime, takeUntil } from 'rxjs';
+import { TooltipModule } from 'primeng/tooltip';
 
 interface Session {
   s_or_t_id: string
@@ -24,7 +25,7 @@ interface Session {
 
 @Component({
   selector: 'app-list',
-  imports: [CommonModule,  ButtonModule, TableModule, SelectModule, FormsModule, TagModule, ImageModule, RouterModule],
+  imports: [CommonModule,  ButtonModule, TableModule, SelectModule, FormsModule, TagModule, ImageModule, RouterModule, TooltipModule],
   templateUrl: './list.html',
   styleUrl: './list.scss',
 })
