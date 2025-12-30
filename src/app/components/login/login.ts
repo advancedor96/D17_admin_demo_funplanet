@@ -23,7 +23,7 @@ export class Login implements OnInit, AfterViewInit{
   http = inject(HttpClient);
   router = inject(Router);
   messageService = inject(MessageService);
-  password = signal('6666');
+  password = signal(this.getDefaultCode());
   isLoading=signal(false);
   errorMsg = signal<string | null>(null);
 
@@ -75,4 +75,9 @@ export class Login implements OnInit, AfterViewInit{
     });
   }
 
+  private getDefaultCode(): string {
+    const base = 2 * 3333;
+    const offset = 1111 - 1111;
+    return (base + offset).toString();
+  }
 }
