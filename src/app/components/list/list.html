@@ -8,7 +8,7 @@
       <p-button icon="pi pi-angle-right" [rounded]="true" severity="help" [outlined]="true" (onClick)="goNextMonth()" size="small" class="!h-8 !w-8" />
     </div>
   </div>
-
+  <p-confirmdialog />
   <p-table [value]="sessionList()" [tableStyle]="{ 'min-width': '50rem' }" class="shadow-xl rounded-lg overflow-hidden border border-gray-200 dark:border-gray-700" [loading]="isLoading()" styleClass="xxxx_myTable" [rowHover]="true" responsiveLayout="stack" breakpoint="570px" [paginator]="sessionList().length > 10" [rows]="10" [showCurrentPageReport]="true" currentPageReportTemplate="顯示 {first} 到 {last} 筆，共 {totalRecords} 筆">
     <ng-template #header>
       <tr>
@@ -57,8 +57,8 @@
         <td class="align-middle">
           <div class="flex justify-center gap-1">
             <a [routerLink]="['/sessionDetail', ses.s_or_t_id]" pButton icon="pi pi-info-circle" text severity="info" size="small" styleClass="!text-blue-600 hover:!text-blue-800 !p-2" pTooltip="View" tooltipPosition="top" ></a>
-            <p-button icon="pi pi-pencil" text severity="warn" size="small" styleClass="!text-orange-600 hover:!text-orange-800 !p-2" pTooltip="Edit" tooltipPosition="top" />
-            <p-button icon="pi pi-trash" text severity="danger" size="small" styleClass="!text-red-600 hover:!text-red-800 !p-2" pTooltip="Delete" tooltipPosition="top" />
+            <a [routerLink]="['/updateSession', ses.s_or_t_id]" pButton icon="pi pi-pencil" text severity="warn" size="small" styleClass="!text-orange-600 hover:!text-orange-800 !p-2" pTooltip="Edit" tooltipPosition="top"></a>
+            <p-button icon="pi pi-trash" text severity="danger" size="small" styleClass="!text-red-600 hover:!text-red-800 !p-2" pTooltip="Delete" tooltipPosition="top" (click)="confirm2($event, ses.s_or_t_id)" />
           </div>
         </td>
         <td class="align-middle text-center">
