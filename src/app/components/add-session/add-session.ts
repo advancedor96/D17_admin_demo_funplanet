@@ -14,10 +14,6 @@ import { ButtonModule } from 'primeng/button';
 import { TextareaModule } from 'primeng/textarea';
 import { FormsModule } from '@angular/forms';
 import dayjs from 'dayjs';
-interface PublishOption {
-  label: string;
-  value: number;
-}
 
 interface UploadResponse {
   message: string;
@@ -47,7 +43,8 @@ export class AddSession {
   // Form fields as signals
   name = signal('');
   type = signal('');
-  yearMonth = signal('');
+  year = signal(new Date().getFullYear()); // 預設指定現在的年份
+  month = signal(new Date().getMonth() + 1); // 預設指定現在的月份
   image = signal('');
   description = signal('');
   min = signal(1);
@@ -85,7 +82,7 @@ export class AddSession {
       this.timeList.update(current => current.filter((_, i) => i !== index));
     } 
   }
-  private uploadImage(): void {
+  private uploadImage() {
     const file = this.selectedFile();
     if (!file) return;
 
@@ -161,7 +158,7 @@ export class AddSession {
     const payload = {
       name: this.name().trim(),
       type: this.type(),
-      year_month: dayjs(this.yearMonth()).format('YYYY-MM-DD'), // 把 this.yearMonth() 用dayjs 從 Date() 轉成 .format('YYYY-MM-DD')
+      year_month: dayjs(`${this.year()}-${this.month()}-01`).format('YYYY-MM-DD'), 
       image: this.image(),
       text: this.description(),
       min: this.min(),
