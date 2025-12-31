@@ -20,9 +20,10 @@ export class App {
   // @ViewChild('snav') snav!: MatSidenav;
 
   Menuitems : MenuItem[] = [
+            { label: 'Add Session', routerLink: '/addSession', command: () => { this.router.navigate(['/addSession']); this.drawerOpen.set(false) }  },
+            { label: 'List', routerLink: '/list', command: () => { this.drawerOpen.set(false) } },
             { label: 'Logout', command: ()=>{this.logout(); this.drawerOpen.set(false)} },
             { label: 'Login', routerLink: '/login', command: () => { this.drawerOpen.set(false) } },
-            { label: 'List', routerLink: '/list', command: () => { this.drawerOpen.set(false) } },
         ];
   logout() {
     // this.snav.close();

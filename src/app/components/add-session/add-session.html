@@ -1,0 +1,121 @@
+<div class="p-6 max-w-4xl mx-auto">
+  <div class="mb-6">
+    <h1 class="text-3xl font-bold mb-2">Add New Session</h1>
+  </div>
+
+  <p-card>
+    <ng-template #content>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+
+        <!-- Session Name -->
+        <div class="col-span-2">
+          <label for="name" class="block text-sm font-medium mb-2">Name</label>
+          <input pInputText id="name" [(ngModel)]="name" name="name" class="w-full" placeholder="Enter session name" />
+          <!-- <small id="name-error" class="text-red-600 mt-1 block" role="alert">Session name is required</small> -->
+        </div>
+
+        <!-- Year Month -->
+        <div>
+          <label for="yearMonth" class="block text-sm font-medium mb-2">Year Month</label>
+          <p-datepicker [(ngModel)]="yearMonth" name="yearMonth" inputId="yearMonth" dateFormat="yy-mm" view="month" class="w-full" />
+        </div>
+
+        <!-- Session Type -->
+        <div>
+          <label for="type" class="block text-sm font-medium mb-2">Session Type</label>
+          <p-select [(ngModel)]="type" name="type" inputId="type"
+            [options]="[{ label: '線上', value: '線上' },{ label: '招牌', value: '招牌' },{ label: '寶寶', value: '寶寶' },{ label: '其他', value: '其他' }]" optionLabel="label" optionValue="value" placeholder="Select session type" class="w-full" />
+        </div>
+
+        <!-- Image Upload -->
+        <div class="col-span-2">
+          <label for="fileUpload" class="block text-sm font-medium mb-3">Session Image</label>
+          <!-- Image Display Area - Priority Display -->
+          @if (uploadedImageUrl()) {
+            <div class="mb-4">
+              <div class="relative inline-block">
+                <img [src]="uploadedImageUrl()" alt="Uploaded session preview"
+                  class="w-full max-w-md h-auto object-contain rounded-lg border border-gray-200 shadow-sm sm:max-w-sm md:max-w-md lg:max-w-lg xl:max-w-xl"
+                  loading="lazy" />
+                <div
+                  class="absolute top-2 right-2 bg-green-500 text-white text-xs px-2 py-1 rounded-full flex items-center">
+                  <i class="pi pi-check mr-1"></i>
+                  Uploaded
+                </div>
+              </div>
+            </div>
+          }
+          <!-- File Upload Button Area -->
+          <div class="space-y-3">
+            <p-fileupload #fileUpload mode="basic" name="sendimage" [auto]="false" accept="image/*"
+              [maxFileSize]="10000000" (onSelect)="onFileSelect($event)" chooseLabel="Choose Image"
+              ariaLabel="Upload session image" [disabled]="isUploading()" class="w-full" />
+
+            <!-- Upload Status Display -->
+            @if (isUploading()) {
+            <div class="flex items-center text-sm text-blue-600 bg-blue-50 p-3 rounded-lg">
+              <i class="pi pi-spin pi-spinner mr-2"></i>
+              <span>Uploading image...</span>
+            </div>
+            }
+
+            <!-- File Selection Status -->
+            @if (selectedFile() && !isUploading() && !uploadedImageUrl()) {
+            <div class="text-sm text-gray-600 bg-gray-50 p-3 rounded-lg">
+              <i class="pi pi-file mr-2"></i>
+              Selected: {{ selectedFile()!.name }}
+            </div>
+            }
+          </div>
+
+        </div>
+
+        <!-- Description -->
+        <div class="col-span-2">
+          <label for="text" class="block text-sm font-medium mb-2">Description</label>
+          <textarea pInputTextarea [(ngModel)]="description"  name="description" id="text" rows="5" class="w-full"
+            placeholder="Enter session description"></textarea>
+        </div>
+
+
+
+        <!-- Min Participants -->
+        <div>
+          <label for="min" class="block text-sm font-medium mb-2">Min Participants</label>
+          <p-inputnumber [(ngModel)]="min" name="min" inputId="min" [min]="0" class="w-full" />
+        </div>
+
+        <!-- Max Participants -->
+        <div>
+          <label for="max" class="block text-sm font-medium mb-2">Max Participants</label>
+          <p-inputnumber [(ngModel)]="max" name="max" inputId="max" [min]="0" class="w-full"/>
+        </div>
+
+        <!-- Max Standby -->
+        <div>
+          <label for="maxStandby" class="block text-sm font-medium mb-2">Max Standby</label>
+          <p-inputnumber [(ngModel)]="maxStandby" name="maxStandby" inputId="maxStandby" [min]="0" class="w-full" />
+        </div>
+
+        <!-- Publish Status -->
+        <div class="col-span-2">
+          <fieldset>
+            <legend class="block text-sm font-medium mb-2">Publish Status</legend>
+            <p-selectbutton [(ngModel)]="publish" name="publish" [options]="[{ label: 'Published', value: 1 },{ label: 'Hidden', value: 0 }]" optionLabel="label" optionValue="value" ariaLabel="Choose publish status" />
+          </fieldset>
+        </div>
+
+
+
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="flex justify-end gap-3 mt-6" role="group" aria-label="Form actions">
+        <p-button label="Cancel" severity="secondary" [outlined]="true" type="button" (onClick)="onCancel()"
+          ariaLabel="Cancel and return to list" />
+        <p-button label="Create Session" type="submit" [loading]="isSubmitting()"
+          ariaLabel="Create new session with provided details" />
+      </div>
+    </ng-template>
+  </p-card>
+</div>

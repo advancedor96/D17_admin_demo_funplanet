@@ -48,9 +48,6 @@ export class SessionDetail implements OnInit {
   }
   loadData() {
     this.http.post(`${myGlobal.apiUrl}/getSessionDetailById`, { session_id: this.session_id() })
-    .pipe(finalize(() => {
-        this.isLoading.set(false);
-      }))
     .subscribe({
       next: (res: any) => {
         console.log('res', res.data);
@@ -76,12 +73,12 @@ export class SessionDetail implements OnInit {
         for(let i = 0; i < this.timeList().length; i++){
           this.setOrderByTimeId(this.timeList()[i].time_id, i);
         }
-
-
+        this.isLoading.set(false);
       },
       error: (err:any) => {
         this.messageService.add({ severity: 'error', summary: err, key: 'tl', life: 3000 });
         console.error('Load session detail error:', err);
+        this.isLoading.set(false);
       }
     });
   } // loadData
