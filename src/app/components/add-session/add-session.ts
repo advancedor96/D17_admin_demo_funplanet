@@ -13,7 +13,7 @@ import { FileUploadModule } from 'primeng/fileupload';
 import { ButtonModule } from 'primeng/button';
 import { TextareaModule } from 'primeng/textarea';
 import { FormsModule } from '@angular/forms';
-
+import dayjs from 'dayjs';
 interface PublishOption {
   label: string;
   value: number;
@@ -27,7 +27,8 @@ interface UploadResponse {
 }
 
 interface TimeSlot {
-  datetime: Date;
+  date: string;
+  time: string;
   text: string;
 }
 
@@ -49,14 +50,14 @@ export class AddSession {
   yearMonth = signal('');
   image = signal('');
   description = signal('');
-  min = signal(0);
-  max = signal(0);
+  min = signal(1);
+  max = signal(2);
   maxStandby = signal(10);
   publish = signal(1);
   sortOrder = signal(0);
 
   timeList = signal<TimeSlot[]>([
-    { datetime: new Date(), text: '' }
+    { date: '', time: '', text: '' }
   ]);
 
   // UI state
@@ -68,26 +69,6 @@ export class AddSession {
 
 
 
-  addTimeSlot(): void {
-    this.timeList.update(current => [
-      ...current,
-      { datetime: new Date(), text: '' }
-    ]);
-  }
-
-  removeTimeSlot(index: number): void {
-    if (this.timeList().length > 1) {
-      this.timeList.update(current => current.filter((_, i) => i !== index));
-    }
-  }
-
-  updateTimeSlot(index: number, field: keyof TimeSlot, value: any): void {
-    this.timeList.update(current => 
-      current.map((slot, i) => 
-        i === index ? { ...slot, [field]: value } : slot
-      )
-    );
-  }
 
   onFileSelect(event: { files: File[] }): void {
     const file = event.files[0];
@@ -96,7 +77,14 @@ export class AddSession {
       this.uploadImage();
     }
   }
-
+  addTime(){
+    this.timeList.update(list => [...list, { date: '', time: '', text: '' }]);
+  }
+  deleteThisTime(index: number): void {
+    if (this.timeList().length > 1) {
+      this.timeList.update(current => current.filter((_, i) => i !== index));
+    } 
+  }
   private uploadImage(): void {
     const file = this.selectedFile();
     if (!file) return;
@@ -144,41 +132,49 @@ export class AddSession {
       });
   }
 
-  onSubmit(): void {
-    // Final validation before submit
+  onSubmit(){
+    const dateRegex = /^\d{4}-\d{2}-\d{2}$/;
+    const timeRegex = /^([01]?[0-9]|2[0-3]):[0-5][0-9]$/;
+    
+    const invalidSlot = this.timeList().find((slot, index) => {
+      if (!slot.date?.trim() || !dateRegex.test(slot.date)) {
+        this.showError(`Time slot ${index + 1}: Invalid or missing date`);
+        return true;
+      }
+      if (!slot.time?.trim() || !timeRegex.test(slot.time)) {
+        this.showError(`Time slot ${index + 1}: Invalid or missing time`);
+        return true;
+      }
+      if (!slot.text?.trim()) {
+        this.showError(`Time slot ${index + 1}: Description is required`);
+        return true;
+      }
+      return false;
+    });
 
-
-    if (this.timeList().length === 0) {
-      this.messageService.add({ 
-        severity: 'warn', 
-        summary: 'Validation Error', 
-        detail: 'At least one time slot is required',
-        key: 'tl',
-        life: 3000 
-      });
-      return;
-    }
-
+    if (invalidSlot) return;
+    // 把 timeList 的 date, time 轉成 datetime 字串。例如: "2025-12-30 01:22:00"
     this.isSubmitting.set(true);
     
     // Format time_list for backend API
-    const formattedTimeList = this.timeList().map(slot => ({
-      datetime: this.formatDateTimeForAPI(slot.datetime),
-      text: slot.text || ''
-    }));
     
     const payload = {
       name: this.name().trim(),
-      type: this.type,
-      year_month: this.yearMonth,
+      type: this.type(),
+      year_month: dayjs(this.yearMonth()).format('YYYY-MM-DD'), // 把 this.yearMonth() 用dayjs 從 Date() 轉成 .format('YYYY-MM-DD')
       image: this.image(),
-      text: this.description,
-      min: this.min,
-      max: this.max,
-      max_standby: this.maxStandby,
-      publish: this.publish,
-      sort_order: this.sortOrder,
-      time_list: formattedTimeList
+      text: this.description(),
+      min: this.min(),
+      max: this.max(),
+      max_standby: this.maxStandby(),
+      publish: this.publish(),
+      sort_order: this.sortOrder(),
+
+    // 把 timeList 的 date, time 轉成 datetime 字串。例如: "2025-12-30 01:22:00"
+      time_list: this.timeList().map(slot => ({
+        datetime: dayjs(`${slot.date} ${slot.time}`).format('YYYY-MM-DD HH:mm:ss'),
+        text: slot.text
+      }))
     };
 
     console.log('Payload:', payload);
@@ -208,14 +204,18 @@ export class AddSession {
       });
   }
 
-  onCancel(): void {
+  onCancel(){
     this.router.navigate(['/list']);
   }
 
-
-
-  private formatDateTimeForAPI(date: Date): string {
-    // Format: yyyy-MM-dd HH:mm:ss
-    return date.toISOString().slice(0, 19).replace('T', ' ');
+  // 輔助方法顯示錯誤
+  private showError(message: string): void {
+    this.messageService.add({ 
+      severity: 'warn', 
+      summary: 'Validation Error', 
+      detail: message,
+      key: 'tl',
+      life: 3000 
+    });
   }
 }
